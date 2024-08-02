@@ -3,29 +3,36 @@ import { Product } from "../typeorm/entities/Product";
 import { ProductRepository } from "../typeorm/repositories/ProductsRepository";
 
 interface IRequest {
+  id: string;
   name: string;
   price: number;
   quantity: number;
 }
 
-class CreateProductService {
-  public async execute({ name, price, quantity }: IRequest): Promise<Product> {
+class ShowProductService {
+  public async execute({
+    id,
+    name,
+    price,
+    quantity,
+  }: IRequest): Promise<Product> {
+    const product = await ProductRepository.findOne({ where: { id: id } });
+    if (!product) {
+      throw new AppError("Product not found");
+    }
+
     const productsExist = await ProductRepository.findByName(name);
 
     if (productsExist) {
       throw new AppError("There is already one product with this name");
     }
 
-    const product = ProductRepository.create({
-      name,
-      price,
-      quantity,
-    });
-
-    await ProductRepository.save(product);
+    product.name = name;
+    product.price = price;
+    product.quantity = quantity;
 
     return product;
   }
 }
 
-export default CreateProductService;
+export default ShowProductService;

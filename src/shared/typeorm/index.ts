@@ -1,5 +1,6 @@
 import { DataSource } from "typeorm";
 import Product from "../../modules/products/typeorm/entities/Product";
+import User from "../../modules/users/typeorm/entities/User";
 
 const dataSource = new DataSource({
   type: "postgres",
@@ -9,7 +10,7 @@ const dataSource = new DataSource({
   password: "docker",
   database: "apivendas",
   migrations: ["./src/shared/typeorm/migrations/*.ts"],
-  entities: [Product],
+  entities: [Product, User],
   migrationsTableName: "migrations",
 });
 

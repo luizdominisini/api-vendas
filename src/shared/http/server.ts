@@ -37,6 +37,6 @@ app.use(
 dataSource.initialize().then(async () => {
   console.log("🔥 DataBase On 🔥");
   app.listen(3000, () => {
-    console.log("🔥 Server On 🔥");
+    console.log("🔥 Server On Port 3000 🔥");
   });
 });

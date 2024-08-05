@@ -1,6 +1,6 @@
 import AppError from "../../../shared/errors/AppError";
-import { Product } from "../typeorm/entities/Product";
-import { ProductRepository } from "../typeorm/repositories/ProductsRepository";
+import Product from "../typeorm/entities/Product";
+import ProductRepository from "../typeorm/repositories/ProductsRepository";
 
 interface IRequest {
   id: string;
@@ -9,7 +9,7 @@ interface IRequest {
   quantity: number;
 }
 
-class ShowProductService {
+class UpdateProductService {
   public async execute({
     id,
     name,
@@ -21,9 +21,9 @@ class ShowProductService {
       throw new AppError("Product not found");
     }
 
-    const productsExist = await ProductRepository.findByName(name);
+    const productsExist = await ProductRepository.findOneBy({ name });
 
-    if (productsExist) {
+    if (productsExist && name != product.name) {
       throw new AppError("There is already one product with this name");
     }
 
@@ -31,8 +31,10 @@ class ShowProductService {
     product.price = price;
     product.quantity = quantity;
 
+    await ProductRepository.save(product);
+
     return product;
   }
 }
 
-export default ShowProductService;
+export default UpdateProductService;

@@ -2,7 +2,8 @@ import AppError from "../../../shared/errors/AppError";
 
 import UserTokenRepository from "../typeorm/repositories/UsersTokensRepository";
 import UserRepository from "../typeorm/repositories/UsersRepository";
-import EtheralMail from "../../../config/mail/etherealMail";
+import EtheralMail from "../../../config/mail/EtherealMail";
+import path from "path";
 
 interface IRequest {
   email: string;
@@ -20,6 +21,12 @@ class SendForgotPasswordEmailService {
       const userToken = UserTokenRepository.create({ user_id });
       await UserTokenRepository.save(userToken);
       // console.log(userToken);
+      const forgotPasswordTemplate = path.resolve(
+        __dirname + "..",
+        "..",
+        "views",
+        "forgot_password.hbs"
+      );
       await EtheralMail.sendMail({
         to: {
           name: user.name,
@@ -27,10 +34,10 @@ class SendForgotPasswordEmailService {
         },
         subject: "Api Vendas: Recuperação de senha.",
         templateData: {
-          template: `Solicitação de redefinição de senha ${userToken.token}`,
+          file: forgotPasswordTemplate,
           variables: {
             name: user.name,
-            token: userToken.token,
+            link: `http://localhost:3000/reset_password?token=${userToken.token}`,
           },
         },
       });

@@ -6,7 +6,7 @@ class UserAvatarController {
     const update = new UpdateUserAvatarService();
     const user = await update.execute({
       user_id: request.user.id,
-      avatarFileName: request.file.filename, //NOTES: FIZ ALTERAÇÃO NA PASTA GLOBAL > EXPRESS > REQUEST E TIREI O UNDEFINED DO REQUEST //MULTER
+      avatarFileName: request.file.filename, //Verificar pasta Notes.txt;
     });
     return response.json(user);
   }

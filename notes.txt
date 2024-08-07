@@ -1,0 +1,5 @@
+Notes:
+1 - A pasta src\modules\users\controller\UserAvatarController.ts - estava dando error no valor "avatarFileName: request.file.filename" pois o file não era obrigatório
+e poderia retornar uma string ou undefined;
+
+1 - Resolve - Para resolver  mudei os @types e adicionei na Interface Request que o file {filename: string} - dizendo que será! uma string.

@@ -9,7 +9,7 @@ interface ITokenPayload {
   exp: number;
   sub: string;
 }
-
+//Verifica se no cabeçalho existe algum token.
 function isAuthenticated(
   request: Request,
   response: Response,

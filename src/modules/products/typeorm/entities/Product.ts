@@ -2,9 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import OrdersProducts from "../../../oders/typeorm/entities/OrdersProducts";
 
 @Entity("products")
 class Product {
@@ -19,6 +21,11 @@ class Product {
 
   @Column("decimal")
   quantity: number;
+
+  @OneToMany(() => OrdersProducts, (order_products) => order_products.product, {
+    cascade: true,
+  })
+  order_products: OrdersProducts[];
 
   @CreateDateColumn()
   created_at: Date;
